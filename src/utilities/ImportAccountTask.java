@@ -3,25 +3,17 @@ package utilities;
 import java.util.concurrent.Callable;
 
 public class ImportAccountTask implements Callable<AmazonMusicAccount> {
+    private final MusicAccountService accountService;
+    private final String accountID;
 
-    private MusicAccountService accountService;
-    private String accountID;
-
-    /**
-     * Constructor for ImportAccountTask.
-     * @param acctService MusicAccountService reference.
-     * @param acctID Account ID to access.
-     */
-    public ImportAccountTask(MusicAccountService acctService, String acctID) {
-        accountService = acctService;
-        accountID = acctID;
+    public ImportAccountTask(MusicAccountService accountService, String accountID) {
+        this.accountService = accountService;
+        this.accountID = accountID;
     }
 
-    /**
-     * Code to be executed in ExecutorService.
-     * @return Requested account object.
-     */
+    @Override
     public AmazonMusicAccount call() {
         return accountService.getAccount(accountID);
     }
 }
+

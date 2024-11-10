@@ -1,20 +1,16 @@
 package utilities;
 
-public class AmazonMusicAccount {
-    private String accountName;
-    private int numOfPlaylists;
-    private String topGenre;
+import java.util.Objects;
 
-    /**
-     * Constructor for AmazonMusicAccount.
-     * @param name Name of account.
-     * @param playlists Number of playlists.
-     * @param genre Top music genre.
-     */
-    public AmazonMusicAccount(String name, int playlists, String genre) {
-        accountName = name;
-        numOfPlaylists = playlists;
-        topGenre = genre;
+public class AmazonMusicAccount {
+    private final String accountName;
+    private final int numOfPlaylists;
+    private final String topGenre;
+
+    public AmazonMusicAccount(String accountName, int numOfPlaylists, String topGenre) {
+        this.accountName = accountName;
+        this.numOfPlaylists = numOfPlaylists;
+        this.topGenre = topGenre;
     }
 
     public String getAccountName() {
@@ -27,5 +23,20 @@ public class AmazonMusicAccount {
 
     public String getTopGenre() {
         return topGenre;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AmazonMusicAccount that = (AmazonMusicAccount) o;
+        return numOfPlaylists == that.numOfPlaylists &&
+                Objects.equals(accountName, that.accountName) &&
+                Objects.equals(topGenre, that.topGenre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountName, numOfPlaylists, topGenre);
     }
 }

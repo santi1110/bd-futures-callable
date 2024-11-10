@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 import utilities.AmazonMusicAccount;
+import utilities.ImportAccountTask;
 import utilities.MusicAccountService;
 
 import java.lang.reflect.Method;
@@ -24,35 +25,27 @@ public class ImportAccountTaskTest {
     }
 
     @Test
-    public void call_isReturnTypeAccount_correctReturnType() {
+    public void call_isReturnTypeAccount_correctReturnType() throws NoSuchMethodException {
         // GIVEN
         ImportAccountTask testTask = new ImportAccountTask(new MusicAccountService(), "SR6345");
-        Class<?> callableClass = testTask.getClass();
-        Method[] classMethods = callableClass.getMethods();
-        boolean result = false;
 
         // WHEN
-        for (Method method : classMethods) {
-            if (method.getName().equals("call")) {
-                if (method.getReturnType().equals(AmazonMusicAccount.class)) {
-                    result = true;
-                }
-            }
-        }
+        Method callMethod = testTask.getClass().getDeclaredMethod("call");
 
         // THEN
-        assertTrue(result, "ImportAccountTask's call() does not have the correct return type!");
+        assertEquals(AmazonMusicAccount.class, callMethod.getReturnType(),
+                "ImportAccountTask's call() does not have the correct return type!");
     }
 
     @Test
-    public void call_returnsCorrectAccount_accountReturned() {
+    public void call_returnsCorrectAccount_accountReturned() throws Exception {
         // GIVEN
         MusicAccountService accountService = new MusicAccountService();
         ImportAccountTask testTask = new ImportAccountTask(accountService, "SR6345");
         AmazonMusicAccount expectedResult = accountService.getAccount("SR6345");
 
         // WHEN
-        AmazonMusicAccount result = (AmazonMusicAccount) testTask.call();
+        AmazonMusicAccount result = testTask.call();
 
         // THEN
         assertEquals(expectedResult, result, "ImportAccountTask's call() does not return accounts correctly!");
